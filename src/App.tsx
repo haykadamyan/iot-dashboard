@@ -23,7 +23,11 @@ function App() {
   const [sensors, setSensors] = useState<SensorData[]>([]);
   const ws = useRef<WebSocket | null>(null);
 
-  useEffect(() => {
+  const setupWebSocket = () => {
+    if (ws.current) {
+      ws.current.close();
+    }
+
     ws.current = new WebSocket(wsURL);
 
     ws.current.onopen = () => {
@@ -51,17 +55,27 @@ function App() {
     };
 
     ws.current.onclose = (event) => {
-      if (event.wasClean) {
-        console.log(
-          `Closed cleanly, code=${event.code}, reason=${event.reason}`,
-        );
-      } else {
+      if (!event.wasClean) {
         console.error("Connection died");
       }
     };
+  };
 
+  useEffect(() => {
+    setupWebSocket();
+
+    const resyncInterval = setInterval(() => {
+      // reset to trigger a resync.
+      if (ws.current) {
+        ws.current.close();
+        setupWebSocket();
+      }
+    }, 3000);
     return () => {
-      if (ws.current) ws.current.close();
+      clearInterval(resyncInterval);
+      if (ws.current) {
+        ws.current.close();
+      }
     };
   }, []);
 
