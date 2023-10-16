@@ -32,7 +32,18 @@ function App() {
 
     ws.current.onmessage = (event) => {
       const sensorData = JSON.parse(event.data);
-      setSensors((prevState) => [...prevState, sensorData]);
+      setSensors((prevState) => {
+        const sensorIndex = prevState.findIndex(
+          (sensor) => sensor.id === sensorData.id,
+        );
+        if (sensorIndex > -1) {
+          const updatedSensors = [...prevState];
+          updatedSensors[sensorIndex] = sensorData;
+          return updatedSensors;
+        } else {
+          return [...prevState, sensorData];
+        }
+      });
     };
 
     ws.current.onerror = (error) => {
