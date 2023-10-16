@@ -1,6 +1,7 @@
 .app {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
+  min-height: 100vh;
 }
 
 .app__header {
@@ -25,4 +26,62 @@
 .app__checkbox {
   margin-left: 10px;
   vertical-align: middle;
+}
+
+.app__main {
+  width: 1024px;
+  margin: 60px auto 0;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/*Sensor*/
+.sensor {
+  border: 1px solid #ddd;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sensor__title {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.sensor__value {
+  font-size: 24px;
+  color: #333;
+}
+
+.sensor--connected {
+  background-color: #e1ffc7;
+}
+
+.sensor--disconnected {
+  background-color: #ffccd5;
+}
+
+.sensor__button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sensor__button--connected {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.sensor__button--disconnected {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.sensor__button:hover {
+  opacity: 0.9;
 }
