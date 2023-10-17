@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import "./App.css";
 
 import Sensor from "components/Sensor";
+import { updateSensorsArray } from "./helpers/sensorsHelper";
+import useWebSocket from "./hooks/useWebSocket";
+import config from "./config";
 
-const wsURL = "ws://localhost:8000";
+const wsURL = config.wsURL;
 
 interface SensorData {
   id: string;
@@ -21,63 +24,22 @@ interface WebSocketCommand {
 function App() {
   const [showOnlyConnected, setShowOnlyConnected] = useState<boolean>(false);
   const [sensors, setSensors] = useState<SensorData[]>([]);
-  const ws = useRef<WebSocket | null>(null);
 
-  const setupWebSocket = () => {
-    if (ws.current) {
-      ws.current.close();
-    }
+  const handleMessage = useCallback((event: MessageEvent) => {
+    const sensorData = JSON.parse(event.data);
 
-    ws.current = new WebSocket(wsURL);
+    setSensors((prevState) => {
+      const existingSensor = prevState.find(
+        (sensor) => sensor.id === sensorData.id,
+      );
 
-    ws.current.onopen = () => {
-      console.log("Connected to the WebSocket");
-    };
+      if (event.data === JSON.stringify(existingSensor)) return prevState;
 
-    ws.current.onmessage = (event) => {
-      const sensorData = JSON.parse(event.data);
-      setSensors((prevState) => {
-        const sensorIndex = prevState.findIndex(
-          (sensor) => sensor.id === sensorData.id,
-        );
-        if (sensorIndex > -1) {
-          const updatedSensors = [...prevState];
-          updatedSensors[sensorIndex] = sensorData;
-          return updatedSensors;
-        } else {
-          return [...prevState, sensorData];
-        }
-      });
-    };
-
-    ws.current.onerror = (error) => {
-      console.error("WebSocket Error:", error);
-    };
-
-    ws.current.onclose = (event) => {
-      if (!event.wasClean) {
-        console.error("Connection died");
-      }
-    };
-  };
-
-  useEffect(() => {
-    setupWebSocket();
-
-    const resyncInterval = setInterval(() => {
-      // reset to trigger a resync.
-      if (ws.current) {
-        ws.current.close();
-        setupWebSocket();
-      }
-    }, 3000);
-    return () => {
-      clearInterval(resyncInterval);
-      if (ws.current) {
-        ws.current.close();
-      }
-    };
+      return updateSensorsArray(prevState, sensorData);
+    });
   }, []);
+
+  const ws = useWebSocket(wsURL, handleMessage, 3000);
 
   const handleCheckboxChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
