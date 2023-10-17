@@ -1,4 +1,3 @@
-// helpers/sensorsHelper.ts
 import { SensorData } from "../App";
 
 function updateSensorsArray(

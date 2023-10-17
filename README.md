@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+# IoT Sensors Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The IoT Sensors Dashboard provides a real-time view of various sensor data, like temperature, humidity, and wind speed. The dashboard connects to a WebSocket server to fetch continuous data updates. The client has been optimized to handle rapid streams of data and minimize re-renders for better performance.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Real-time Data Display**: Sensor data updates in real-time.
+- **Optimized Data Handling**: Introduces minimal re-renders by leveraging advanced React hooks and data handling strategies.
+- **WebSocket Connection**: Uses WebSocket to fetch continuous sensor updates.
+- **Sensor Control**: Allows users to manually connect or disconnect sensors.
+- **Filtering**: An option to show only connected sensors.
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Ensure you have the following installed:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js
+- npm/yarn
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the Repository**
+    ```bash
+    git clone https://github.com/haykadamyan/iot-dashboard.git
+    cd iot-dashboard
+    ```
 
-### `npm run build`
+2. **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Start the Development Server**
+    ```bash
+    npm start
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The app should now be running on `http://localhost:3000`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Configuration
 
-### `npm run eject`
+The WebSocket server's URL is configurable through the `REACT_APP_WS_URL` environment variable. Update the `.env` file to point to your WebSocket server if it's different from the default.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
